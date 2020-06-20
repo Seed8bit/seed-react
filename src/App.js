@@ -1,32 +1,23 @@
 import React from 'react';
-import {Card, Button} from 'react-bootstrap';
-import {vegetableList} from './vegeInfo';
+import {vegetableList, navInfo} from './vegeInfo';
+import {NavigationBar as navigationBar} from './Navigation';
+import {VegeCard as vegeCard} from './VegeCard';
 
+function App() {
+  const displayItem = vegetableList.map((element) => {
+    return (vegeCard(element));
+  });
 
-class App extends React.Component {
-  render() {
-    const displayItem = vegetableList.map((element) => {
-      return (
-        <div style = {{margin: '2rem'}} key = {element.name}>
-          <Card style={{width: '10rem'}}>
-            <Card.Img variant="top" src={element.icon}/>
-            <Card.Body>
-              <Card.Title>{element.name}</Card.Title>
-              <Card.Text>
-            TestTest
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
-        </div>);
-    });
-
-    return (
+  return (
+    <div>
+      <div>
+        {navigationBar({navInfo})}
+      </div>
       <div style={{display: 'flex', margin: '3rem'}}>
         {displayItem}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default App;
