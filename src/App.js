@@ -13,7 +13,8 @@ function App() {
       <div>
         {navigationBar({navInfo})}
       </div>
-      <div style={{display: 'flex', margin: '3rem'}}>
+      <div style={{display: 'flex', flexDirection: 'row',
+        flexWrap: 'wrap', margin: '3rem'}}>
         {displayItem}
       </div>
     </div>
