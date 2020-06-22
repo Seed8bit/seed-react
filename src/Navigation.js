@@ -4,7 +4,7 @@ import {Navbar, Nav} from 'react-bootstrap';
 export function NavigationBar(params) {
   return (
     <Navbar bg="dark" variant="dark">
-      <Navbar.Brand>蔬菜果园</Navbar.Brand>
+      <Navbar.Brand>蔬菜图鉴</Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link href={params.navInfo[0].link}>
           {params.navInfo[0].name}
