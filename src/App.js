@@ -3,7 +3,7 @@ import {navInfo} from './vegeInfo';
 import {NavigationBar as navigationBar} from './Navigation';
 import listVegeCards from './VegeCards';
 import {Route, Switch} from 'react-router-dom';
-import Tester from './MyGarden';
+import MyGarden from './MyGarden';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       </div>
       <Switch>
         <Route path={navInfo[0].link} component={listVegeCards} exact/>
-        <Route path={navInfo[1].link} component={Tester}/>
+        <Route path={navInfo[1].link} component={MyGarden}/>
       </Switch>
     </div>
   );
