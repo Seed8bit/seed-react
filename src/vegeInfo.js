@@ -113,6 +113,6 @@ export const navInfo = [
   },
   {
     'name': '菜园',
-    'link': '/',
+    'link': '/MyGarden',
   },
 ];

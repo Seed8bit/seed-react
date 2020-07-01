@@ -1,22 +1,20 @@
 import React from 'react';
-import {vegetableList, navInfo} from './vegeInfo';
+import {navInfo} from './vegeInfo';
 import {NavigationBar as navigationBar} from './Navigation';
-import {VegeCard as vegeCard} from './VegeCard';
+import listVegeCards from './VegeCards';
+import {Route, Switch} from 'react-router-dom';
+import MyGarden from './MyGarden';
 
 function App() {
-  const displayItem = vegetableList.map((element) => {
-    return (vegeCard(element));
-  });
-
   return (
     <div>
       <div>
         {navigationBar({navInfo})}
       </div>
-      <div style={{display: 'flex', flexDirection: 'row',
-        flexWrap: 'wrap', margin: '3rem'}}>
-        {displayItem}
-      </div>
+      <Switch>
+        <Route path={navInfo[0].link} component={listVegeCards} exact/>
+        <Route path={navInfo[1].link} component={MyGarden}/>
+      </Switch>
     </div>
   );
 }

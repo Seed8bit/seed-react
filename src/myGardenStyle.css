@@ -1,0 +1,9 @@
+/*https://www.thetopsites.net/article/52643603.shtml*/
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(.5) sepia(1) saturate(5) hue-rotate(175deg);
+}
+
+.carousel-indicators .active{
+  background-color: black;
+}
