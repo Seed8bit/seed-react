@@ -3,10 +3,10 @@ import API from './API';
 const endpoint = `/info`;
 
 const getBreedInfo = async (queryPara) => {
-  const { vegeName } = queryPara;
+  const {vegeName} = queryPara;
   try {
     const response = await API.get(
-      `${endpoint}?vegeName=${vegeName}`
+        `${endpoint}?vegeName=${vegeName}`,
     );
     return response;
   } catch (error) {
@@ -14,4 +14,4 @@ const getBreedInfo = async (queryPara) => {
   }
 };
 
-export default { getBreed };
+export default {getBreedInfo};
