@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
+    "express": "^4.17.1",
     "jquery": "^3.5.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
@@ -16,11 +18,12 @@
     "reactstrap": "^8.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "yarn build && yarn serve",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "serve": "node backend/main.js"
   },
   "husky": {
     "hooks": {
@@ -44,5 +47,6 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.20.0",
     "husky": "^4.2.5"
-  }
+  },
+  "proxy": "http://localhost:5000/"
 }
