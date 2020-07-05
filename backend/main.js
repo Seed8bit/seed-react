@@ -4,7 +4,14 @@ const path = require('path');
 const app = express();
 
 const breedInfoMap = new Map([
-  ['tomato', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/testtest.txt'],
+  ['tomato', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/tomato.md'],
+  ['redpepper', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/redpepper.md'],
+  ['potato', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/potato.md'],
+  ['lettuce', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/lettuce.md'],
+  ['greenonion', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/greenonion.md'],
+  ['eggplant', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/eggplant.md'],
+  ['cucumber', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/cucumber.md'],
+  ['carrot', 'https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/carrot.md'],
 ]);
 
 const getBreedInfo = async (vegeName) => {
