@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {Container, Row, Col, ProgressBar
   , Pagination, Nav, Carousel} from 'react-bootstrap';
-import {testData} from './TestData';
 import './myGardenStyle.css';
+import {useBreedInfo} from './context/useBreedInfo';
 
 function markdownExtractor(str) {
   const pages = str.split(/(?=#\s+)/);
@@ -50,9 +50,16 @@ function MyGardenSide() {
 };
 
 export default function MyGarden() {
-  const input = testData;
+  const [data, queryBreedInfo] = useBreedInfo({vegeName: 'tomato'});
+  const breedInfo, loading, hasError = data;
   const [activePage, setActivePage] = useState(1);
-  const content = markdownExtractor(input);
+  const content = markdownExtractor(breedInfo.markdown);
+
+  const sideTabOnSelect = (selectedKey) => {
+    console.log(`selected: ${selectedKey}`);
+    // TODO. Get Vege Name, then call queryBreedInfo
+    // queryBreedInfo({vegeName: 'selected vege name'})
+  }
 
   const handleActivePageSel = (selection) => setActivePage(selection);
 

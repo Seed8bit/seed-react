@@ -60,7 +60,7 @@ function CreateVegeCard(params) {
   );
 }
 
-export default function listVegeCards() {
+export default function VegeCardList() {
   const displayItem = vegetableList.map((element) => {
     // turn eslint complaint off for the next line of code
     // eslint complaints using capital for function naming.

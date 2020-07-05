@@ -80,7 +80,7 @@ export const vegetableList = [
   },
   {
     'name': '红辣椒',
-    'page': 'redchilli',
+    'page': 'redpepper',
     'icon': 'https://i.ibb.co/mBHkvZp/red-pepper.jpg',
     'general': '具有御寒、增强食欲、杀菌的功效。 除了含有丰富的胡萝卜素外,' +
                '一根红辣椒还大约含有5000个国际单位的维生素A,可满足成年人的每天需求量',
