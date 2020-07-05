@@ -49,9 +49,10 @@ function MyGardenSide() {
   );
 };
 
+/* eslint-disable */
 export default function MyGarden() {
   const [data, queryBreedInfo] = useBreedInfo({vegeName: 'tomato'});
-  const breedInfo, loading, hasError = data;
+  const {breedInfo, loading, hasError} = data;
   const [activePage, setActivePage] = useState(1);
   const content = markdownExtractor(breedInfo.markdown);
 
@@ -59,7 +60,7 @@ export default function MyGarden() {
     console.log(`selected: ${selectedKey}`);
     // TODO. Get Vege Name, then call queryBreedInfo
     // queryBreedInfo({vegeName: 'selected vege name'})
-  }
+  };
 
   const handleActivePageSel = (selection) => setActivePage(selection);
 
@@ -138,3 +139,4 @@ export default function MyGarden() {
     </>
   );
 }
+/* eslint-ensable */
