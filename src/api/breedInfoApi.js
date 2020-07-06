@@ -13,4 +13,4 @@ const getBreedInfo = async (queryPara) => {
   }
 };
 
-export default {getBreedInfo};
+export default getBreedInfo;

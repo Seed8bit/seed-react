@@ -51,92 +51,101 @@ function MyGardenSide() {
 
 /* eslint-disable */
 export default function MyGarden() {
-  const [data, queryBreedInfo] = useBreedInfo({vegeName: 'tomato'});
-  const {breedInfo, loading, hasError} = data;
+  const [{data, loading, hasError}, queryBreedInfo] = useBreedInfo({vegeName: 'tomato'});
   const [activePage, setActivePage] = useState(1);
-  const content = markdownExtractor(breedInfo.markdown);
+  if (loading) {
+    return(<p>loading...</p>);
 
-  const sideTabOnSelect = (selectedKey) => {
-    console.log(`selected: ${selectedKey}`);
-    // TODO. Get Vege Name, then call queryBreedInfo
-    // queryBreedInfo({vegeName: 'selected vege name'})
-  };
+  } else if (hasError) {
+    return(<p>error getting content...</p>)
 
-  const handleActivePageSel = (selection) => setActivePage(selection);
-
-  const paginationItems = [];
-  const slides = [];
-
-  for (let number = 0; number < content.length; number++) {
-    if (content[number]['slides'].length > 0) {
-      const carouselItems = [];
-      content[number]['slides'].forEach((element) => {
-        carouselItems.push(
-            <Carousel.Item>
-              <img
-                src={element.url}
-                alt={element.alt}
-              />
-              <Carousel.Caption>
-                <p>{element.alt}</p>
-              </Carousel.Caption>
-            </Carousel.Item>);
-      });
-      slides.push(
-          <Carousel>
-            {carouselItems}
-          </Carousel>);
-    } else {
-      slides.push(<></>);
+  } else {
+    const content = markdownExtractor(data.markdown);
+    const paginationItems = [];
+    const slides = [];
+  
+    const sideTabOnSelect = (selectedKey) => {
+      console.log(`selected: ${selectedKey}`);
+      // TODO. Get Vege Name, then call queryBreedInfo
+      // queryBreedInfo({vegeName: 'selected vege name'})
+    };
+  
+    const handleActivePageSel = (selection) => {
+      setActivePage(selection);
     }
-  }
-
-  for (let number = 1; number <= content.length; number++) {
-    paginationItems.push(
-        <Pagination.Item key={number} active={number === activePage}>
-          {number}
-        </Pagination.Item>,
+  
+    for (let number = 0; number < content.length; number++) {
+      if (content[number]['slides'].length > 0) {
+        const carouselItems = [];
+        content[number]['slides'].forEach((element) => {
+          carouselItems.push(
+              <Carousel.Item>
+                <img
+                  src={element.url}
+                  alt={element.alt}
+                />
+                <Carousel.Caption>
+                  <p>{element.alt}</p>
+                </Carousel.Caption>
+              </Carousel.Item>);
+        });
+        slides.push(
+            <Carousel>
+              {carouselItems}
+            </Carousel>);
+      } else {
+        slides.push(<></>);
+      }
+    }
+  
+    for (let number = 1; number <= content.length; number++) {
+      paginationItems.push(
+          <Pagination.Item key={number} active={number === activePage}>
+            {number}
+          </Pagination.Item>,
+      );
+    }
+  
+    const paginationBasic = (
+      <div>
+        <Pagination onClick={(params)=>{
+          handleActivePageSel(params.target.text);
+        }}>{paginationItems}</Pagination>
+        <br/>
+      </div>
+    );
+  
+    // "activePage - 1" to convert to index
+    return (
+      <>
+        <Container fluid style={{maxWidth: 1250}}>
+          <Row>
+            <Col sm={2} xs={2}>
+              <MyGardenSide/>
+            </Col>
+            <Col sm={10} xs={10}>
+              <Container fluid>
+                <ProgressBar now={activePage*100/content.length}
+                  label={content[activePage - 1]['title']}/>
+                <Row>
+                  <Col sm={8} xs={8} md={8} lg={8}>
+                    <ReactMarkdown
+                      source={content[activePage - 1]['paragraphs']}/>
+                  </Col>
+                  <Col sm={4} xs={4} md={4} lg={4}>
+                    {slides[activePage - 1]}
+                  </Col>
+                </Row>
+                <Row>
+                  {paginationBasic}
+                </Row>
+              </Container>
+            </Col>
+          </Row>
+        </Container>
+      </>
     );
   }
-
-  const paginationBasic = (
-    <div>
-      <Pagination onClick={(params)=>{
-        handleActivePageSel(params.target.text);
-      }}>{paginationItems}</Pagination>
-      <br/>
-    </div>
-  );
-
-  // "activePage - 1" to convert to index
-  return (
-    <>
-      <Container fluid style={{maxWidth: 1250}}>
-        <Row>
-          <Col sm={2} xs={2}>
-            <MyGardenSide/>
-          </Col>
-          <Col sm={10} xs={10}>
-            <Container fluid>
-              <ProgressBar now={activePage*100/content.length}
-                label={content[activePage - 1]['title']}/>
-              <Row>
-                <Col sm={8} xs={8} md={8} lg={8}>
-                  <ReactMarkdown
-                    source={content[activePage - 1]['paragraphs']}/>
-                </Col>
-                <Col sm={4} xs={4} md={4} lg={4}>
-                  {slides[activePage - 1]}
-                </Col>
-              </Row>
-              <Row>
-                {paginationBasic}
-              </Row>
-            </Container>
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
+ 
 }
 /* eslint-ensable */
