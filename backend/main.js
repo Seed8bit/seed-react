@@ -18,7 +18,6 @@ app.get('/myGarden', (req, res) => {
 });
 
 app.get('/info', async (req, res) => {
-  console.log('Getting breed info ...');
   try {
     const vegeName = req.query.vegeName;
     breedInfo = await breed.getBreedInfo(vegeName);

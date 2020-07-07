@@ -6,7 +6,7 @@ const useBreedInfo = (initialQuery) => {
   const [breedInfo, setBreedInfo] = useState({
     loading: true,
     hasError: false,
-    data: undefined
+    data: undefined,
   });
 
   useEffect(() => {
@@ -16,14 +16,14 @@ const useBreedInfo = (initialQuery) => {
         setBreedInfo({
           loading: false,
           hasError: false,
-          data: breedInfoResponse.data
+          data: breedInfoResponse.data,
         });
       } catch (error) {
         console.log(error);
         setBreedInfo({
           loading: false,
           hasError: true,
-          data: undefined
+          data: undefined,
         });
       }
     };
