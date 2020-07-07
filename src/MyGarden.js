@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import ReactMarkdown from 'react-markdown';
-import {Container, Row, Col, ProgressBar
-  , Pagination, Nav, Carousel} from 'react-bootstrap';
+import {
+  Container, Row, Col, ProgressBar
+  , Pagination, Nav, Carousel,
+} from 'react-bootstrap';
 import './myGardenStyle.css';
 import {useBreedInfo} from './context/useBreedInfo';
+import {Spinner} from './components/notification';
 
 function markdownExtractor(str) {
   const pages = str.split(/(?=#\s+)/);
@@ -21,116 +24,134 @@ function markdownExtractor(str) {
         slides.push({'url': url, 'alt': alt});
       });
     }
-    content.push({'title': element.split('\n')[0],
+    content.push({
+      'title': element.split('\n')[0],
       'paragraphs': element.replace(/!\[.*\]\(.*\)/g, ''),
-      'slides': slides});
+      'slides': slides,
+    });
   });
   return content;
 }
 
-function MyGardenSide() {
+/* eslint-disable react/prop-types */
+const MyGardenSide = ({onSelectAction}) => {
   return (
     <>
       <Nav className="col-md-12 d-none d-md-block bg-light sidebar"
-        activeKey="/home"
-        onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
+        activeKey="tomato"
+        onSelect={(selectedKey) => onSelectAction(selectedKey)}
       >
         <Nav.Item>
-          <Nav.Link href="/home">西红柿</Nav.Link>
+          <Nav.Link eventKey="tomato">西红柿</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="link-1">黄瓜</Nav.Link>
+          <Nav.Link eventKey="cucumber">黄瓜</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="link-2">小葱</Nav.Link>
+          <Nav.Link eventKey="greenonion">小葱</Nav.Link>
         </Nav.Item>
       </Nav>
     </>
   );
 };
+/* eslint-enable react/prop-types */
+
+const BreedLoading = () => {
+  return (
+    <>
+      <Container fluid style={{maxWidth: 1250}}>
+        <p>Loading...</p>
+        <Spinner></Spinner>
+      </Container>
+    </>
+  );
+};
+
+const BreedError = () => {
+  return (
+    <p>error getting content...</p>
+  );
+};
 
 /* eslint-disable */
 export default function MyGarden() {
-  const [{data, loading, hasError}, queryBreedInfo] = useBreedInfo({vegeName: 'tomato'});
+  const [{ data, loading, hasError }, queryBreedInfo] = useBreedInfo({ vegeName: 'tomato' });
   const [activePage, setActivePage] = useState(1);
   if (loading) {
-    return(<p>loading...</p>);
-
+    return <BreedLoading/>
   } else if (hasError) {
-    return(<p>error getting content...</p>)
-
+    return <BreedError/>
   } else {
     const content = markdownExtractor(data.markdown);
     const paginationItems = [];
     const slides = [];
-  
+
     const sideTabOnSelect = (selectedKey) => {
       console.log(`selected: ${selectedKey}`);
-      // TODO. Get Vege Name, then call queryBreedInfo
-      // queryBreedInfo({vegeName: 'selected vege name'})
+      queryBreedInfo({vegeName: selectedKey});
     };
-  
+
     const handleActivePageSel = (selection) => {
       setActivePage(selection);
     }
-  
+
     for (let number = 0; number < content.length; number++) {
       if (content[number]['slides'].length > 0) {
         const carouselItems = [];
         content[number]['slides'].forEach((element) => {
           carouselItems.push(
-              <Carousel.Item>
-                <img
-                  src={element.url}
-                  alt={element.alt}
-                />
-                <Carousel.Caption>
-                  <p>{element.alt}</p>
-                </Carousel.Caption>
-              </Carousel.Item>);
+            <Carousel.Item>
+              <img
+                src={element.url}
+                alt={element.alt}
+              />
+              <Carousel.Caption>
+                <p>{element.alt}</p>
+              </Carousel.Caption>
+            </Carousel.Item>);
         });
         slides.push(
-            <Carousel>
-              {carouselItems}
-            </Carousel>);
+          <Carousel>
+            {carouselItems}
+          </Carousel>);
       } else {
         slides.push(<></>);
       }
     }
-  
+
     for (let number = 1; number <= content.length; number++) {
       paginationItems.push(
-          <Pagination.Item key={number} active={number === activePage}>
-            {number}
-          </Pagination.Item>,
+        <Pagination.Item key={number} active={number === activePage}>
+          {number}
+        </Pagination.Item>,
       );
     }
-  
+
     const paginationBasic = (
       <div>
-        <Pagination onClick={(params)=>{
+        <Pagination onClick={(params) => {
           handleActivePageSel(params.target.text);
         }}>{paginationItems}</Pagination>
-        <br/>
+        <br />
       </div>
     );
-  
+
     // "activePage - 1" to convert to index
     return (
       <>
-        <Container fluid style={{maxWidth: 1250}}>
+        <Container fluid style={{ maxWidth: 1250 }}>
           <Row>
             <Col sm={2} xs={2}>
-              <MyGardenSide/>
+              <MyGardenSide onSelectAction={sideTabOnSelect} />
             </Col>
             <Col sm={10} xs={10}>
               <Container fluid>
-                <ProgressBar now={activePage*100/content.length}
-                  label={content[activePage - 1]['title']}/>
+                <ProgressBar now={activePage * 100 / content.length}
+                  label={content[activePage - 1]['title']} />
                 <Row>
                   <Col sm={8} xs={8} md={8} lg={8}>
                     <ReactMarkdown
-                      source={content[activePage - 1]['paragraphs']}/>
+                      source={content[activePage - 1]['paragraphs']} />
                   </Col>
                   <Col sm={4} xs={4} md={4} lg={4}>
                     {slides[activePage - 1]}
@@ -146,6 +167,6 @@ export default function MyGarden() {
       </>
     );
   }
- 
+
 }
 /* eslint-ensable */
