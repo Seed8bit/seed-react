@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {
   Container, Row, Col, ProgressBar
-  , Pagination, Nav, Carousel,
+  , Nav, Carousel, Button, Navbar
 } from 'react-bootstrap';
 import './myGardenStyle.css';
 import {useBreedInfo} from './context/useBreedInfo';
@@ -37,7 +37,8 @@ function markdownExtractor(str) {
 const MyGardenSide = ({onSelectAction}) => {
   return (
     <>
-      <Nav className="col-md-12 d-none d-md-block bg-light sidebar"
+      <Nav className="col-md-12 d-md-block bg-light sidebar"
+        toggle
         activeKey="tomato"
         onSelect={(selectedKey) => onSelectAction(selectedKey)}
       >
@@ -77,23 +78,34 @@ const BreedError = () => {
 export default function MyGarden() {
   const [{ data, loading, hasError }, queryBreedInfo] = useBreedInfo({ vegeName: 'tomato' });
   const [activePage, setActivePage] = useState(1);
+  const [isMobile, setIsMobile] = useState(() => {
+    return window.innerWidth < 600
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 600) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+  })
+
   if (loading) {
     return <BreedLoading/>
   } else if (hasError) {
     return <BreedError/>
   } else {
     const content = markdownExtractor(data.markdown);
-    const paginationItems = [];
     const slides = [];
 
     const sideTabOnSelect = (selectedKey) => {
       console.log(`selected: ${selectedKey}`);
       queryBreedInfo({vegeName: selectedKey});
     };
-
-    const handleActivePageSel = (selection) => {
-      setActivePage(selection);
-    }
 
     for (let number = 0; number < content.length; number++) {
       if (content[number]['slides'].length > 0) {
@@ -119,54 +131,101 @@ export default function MyGarden() {
       }
     }
 
-    for (let number = 1; number <= content.length; number++) {
-      paginationItems.push(
-        <Pagination.Item key={number} active={number === activePage}>
-          {number}
-        </Pagination.Item>,
-      );
+    const changePage = (direction) => {
+      if (direction == 'next') {
+        if (activePage == content.length) {
+          setActivePage(content.length)
+        } else {
+          setActivePage(currentActivePage => currentActivePage + 1)
+        }
+      } else {
+        if (activePage == 1) {
+          setActivePage(1)
+        } else {
+          setActivePage(currentActivePage => currentActivePage - 1)
+        }
+      }
     }
 
-    const paginationBasic = (
-      <div>
-        <Pagination onClick={(params) => {
-          handleActivePageSel(params.target.text);
-        }}>{paginationItems}</Pagination>
-        <br />
-      </div>
-    );
+    const simplePaging = () => {
+
+      return (<>
+        <Col>
+          <Button size='sm' variant="outline-primary" onClick={() => changePage('back')}
+                  style={{marginLeft:'1rem', marginRight:'1rem'}}>上一页</Button>
+          <Button size='sm' variant="outline-primary" onClick={() => changePage('next')}
+                  style={{marginLeft:'1rem', marginRight:'1rem'}}>下一页</Button>
+        </Col>
+       </>);
+    };
 
     // "activePage - 1" to convert to index
-    return (
-      <>
-        <Container fluid style={{ maxWidth: 1250 }}>
-          <Row>
-            <Col sm={2} xs={2}>
-              <MyGardenSide onSelectAction={sideTabOnSelect} />
-            </Col>
-            <Col sm={10} xs={10}>
-              <Container fluid>
+    if (!isMobile) {
+      return (
+        <>
+          <Container fluid>
+            <Row>
+              <Col sm={2} xs={2} md={2} lg={2}>
+                <MyGardenSide onSelectAction={sideTabOnSelect} />
+              </Col>
+              <Col sm={10} xs={10} md={10} lg={10}>
+                <Container fluid>
+                  <ProgressBar now={activePage * 100 / content.length}
+                    label={content[activePage - 1]['title']} />
+                  <Row>
+                    <Col sm={8} xs={8} md={8} lg={8}>
+                      <ReactMarkdown
+                        source={content[activePage - 1]['paragraphs']} />
+                    </Col>
+                    <Col sm={4} xs={4} md={4} lg={4}>
+                      {slides[activePage - 1]}
+                    </Col>
+                  </Row>
+                  <Row style={{marginTop: "2rem"}}>
+                    {simplePaging()}
+                  </Row>
+                </Container>
+              </Col>
+            </Row>
+          </Container>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Container fluid>
+            <Row>               
+              <Navbar collapseOnSelect  expand="sm">
+                <Navbar.Toggle />
+                <Navbar.Collapse>
+                  <MyGardenSide onSelectAction={sideTabOnSelect} />
+                </Navbar.Collapse>
+              </Navbar>
+            </Row>
+            <Row>
+              <Col>
                 <ProgressBar now={activePage * 100 / content.length}
-                  label={content[activePage - 1]['title']} />
-                <Row>
-                  <Col sm={8} xs={8} md={8} lg={8}>
-                    <ReactMarkdown
-                      source={content[activePage - 1]['paragraphs']} />
-                  </Col>
-                  <Col sm={4} xs={4} md={4} lg={4}>
-                    {slides[activePage - 1]}
-                  </Col>
-                </Row>
-                <Row>
-                  {paginationBasic}
-                </Row>
-              </Container>
-            </Col>
-          </Row>
-        </Container>
-      </>
-    );
+                    label={content[activePage - 1]['title']} />              
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{leftMargin: 1, rightMargin: 1}}>
+                <ReactMarkdown
+                  source={content[activePage - 1]['paragraphs']} />              
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {slides[activePage - 1]}
+              </Col>
+            </Row>
+            <Row style={{marginTop: "2rem"}}>
+              {simplePaging()}
+            </Row>
+          </Container>
+        </>
+      );
+    }
   }
-
 }
 /* eslint-ensable */
