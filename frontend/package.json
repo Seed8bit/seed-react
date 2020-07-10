@@ -1,0 +1,7 @@
+{
+  "name": "seed-react-frontend",
+  "version": "1.0.0",
+  "description": "frontend for seed application",
+  "main": "index.js",
+  "license": "MIT"
+}
