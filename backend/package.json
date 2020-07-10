@@ -1,0 +1,7 @@
+{
+  "name": "seed-express-backend",
+  "version": "1.0.0",
+  "description": "backend for seed application",
+  "main": "index.js",
+  "license": "MIT"
+}
