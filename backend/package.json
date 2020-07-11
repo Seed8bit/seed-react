@@ -9,6 +9,17 @@
     "express": "^4.17.1"
   },
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "lint": "eslint ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run lint"
+    }
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "husky": "^4.2.5"
   }
 }
