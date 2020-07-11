@@ -3,5 +3,12 @@
   "version": "1.0.0",
   "description": "backend for seed application",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "node main.js"
+  }
 }
