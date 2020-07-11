@@ -13,9 +13,11 @@
     "deps-backend": "cd backend && yarn install --frozen-lockfile",
     "deps-frontend": "cd frontend && yarn install --frozen-lockfile",
     "deps": "npm-run-all -p deps-backend deps-frontend",
+    "build-frontend": "cd frontend && yarn build",
     "server": "cd backend && yarn start",
     "client": "cd frontend && yarn start",
-    "dev": "concurrently \"yarn run server\" \"yarn run client\""
+    "dev-concurrent": "concurrently \"yarn run server\" \"yarn run client\"",
+    "deploy": "npm-run-all lint build-frontend server"
   },
   "husky": {
     "hooks": {
