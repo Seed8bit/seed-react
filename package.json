@@ -8,8 +8,7 @@
   "license": "MIT",
   "scripts": {
     "deps-backend": "yarn install --prefix backend --frozen-lockfile",
-    "deps-frontend": "yarn install --prefix frontend --frozen-lockfile",
-    "server-dev": "cd server && npm run start:watch",
+    "deps-frontend": "cd frontend && yarn install --frozen-lockfile",
     "server": "yarn start --prefix backend",
     "client": "yarn start --prefix frontend"
   },
