@@ -4,17 +4,18 @@ const breed = require('./info/breed');
 
 const app = express();
 const port = process.env.PORT || 5000;
+const frontendBuildPath = '../frontend/build';
 
-app.use(express.static(path.join(__dirname, '/../build')));
+app.use(express.static(path.join(__dirname, frontendBuildPath)));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../build/index.html'));
+  res.sendFile(path.join(__dirname + `/${frontendBuildPath}/index.html`));
 });
 
 app.get('/myGarden', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../build/index.html'));
+  res.sendFile(path.join(__dirname + `/${frontendBuildPath}/index.html`));
 });
 
 app.get('/info', async (req, res) => {
