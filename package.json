@@ -7,16 +7,9 @@
   "author": "Runze <sendrunzedong@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "deps-root": "yarn install --frozen-lockfile",
     "deps-backend": "cd backend && yarn install --frozen-lockfile",
     "deps-frontend": "cd frontend && yarn install --frozen-lockfile",
-    "server": "yarn start --prefix backend",
-    "client": "yarn start --prefix frontend"
-  },
-  "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.20.0",
-    "husky": "^4.2.5"
+    "server": "cd backend && yarn start",
+    "client": "cd frontend && yarn start"
   }
 }
