@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Card, Button, Modal, Table, Container, Col, Row, Image} from 'react-bootstrap';
+import {Card, Button, Modal, Table, Container, Col, Row, Image, Form} from 'react-bootstrap';
 import {vegetableList} from './vegeInfo';
 import './myGardenStyle.css';
 
@@ -23,8 +23,7 @@ function vegeInfoModalTable(props) {
   );
 }
 
-function CreateVegeCard(params, isMobile) {
-  const [show, setShow] = useState(false);
+function CreateVegeCard(params, isMobile, show, setShow) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -104,11 +103,30 @@ function CreateVegeCard(params, isMobile) {
   }
 }
 
+function VegeFilter({setVegeSelection}) {
+
+  return (
+    <Form noValidate onSubmit={(event) => {event.preventDefault()}}>
+      <Form.Row>
+      <Form.Group as={Col} style={{width: "20rem", margin: "1rem"}}>
+        <Form.Control as="input" type="text" placeholder="搜索蔬菜" name="vegeFilter" onChange={(event) => {
+          setVegeSelection(event.target.value)
+        }}/>
+      </Form.Group>
+      </Form.Row>
+    </Form>
+  );
+}
+
+
 export default function VegeCardList() {
 
+  const [show, setShow] = useState(false);
+  const [vegeSelection, setVegeSelection] = useState("");
   const [isMobile, setIsMobile] = useState(() => {
     return window.innerWidth < 600
   });
+  const vegeList = [];
 
   useEffect(() => {
     function handleResize() {
@@ -122,18 +140,34 @@ export default function VegeCardList() {
     window.addEventListener('resize', handleResize)
   });
 
-  const displayItem = vegetableList.map((element) => {
+  if (vegeSelection === "") {
+    vegetableList.forEach(element => {vegeList.push(element)});
+  } else {
+    const filterSelection = vegetableList.filter((element) => {
+      return element.name.includes(vegeSelection);
+    });
+    if (filterSelection.length > 0) {
+      filterSelection.forEach(element => {vegeList.push(element)});
+    } else {
+      vegetableList.forEach(element => {vegeList.push(element)});
+    }
+  }
+
+  const displayItem = vegeList.map((element) => {
     // turn eslint complaint off for the next line of code
     // eslint complaints using capital for function naming.
     // if not using capital then the function cannot use Hooks.
     // TODO: rules on naming function, class, variable
-    return (CreateVegeCard(element, isMobile));    // eslint-disable-line
+    return (CreateVegeCard(element, isMobile, show, setShow));    // eslint-disable-line
   });
 
   return (
-    <div style={{display: 'flex', flexDirection: 'row',
-      flexWrap: 'wrap'}}>
-      {displayItem}
-    </div>
+    <>
+      <VegeFilter setVegeSelection = {setVegeSelection}/>
+      <div style={{display: 'flex', flexDirection: 'row',
+        flexWrap: 'wrap'}}>
+        {displayItem}
+      </div>
+    </>
   );
 }
