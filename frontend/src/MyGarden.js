@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {
   Container, Row, Col, ProgressBar
-  , Nav, Carousel, Button, Navbar
+  , Nav, Carousel, Button, Navbar,
 } from 'react-bootstrap';
 import './myGardenStyle.css';
 import {useBreedInfo} from './context/useBreedInfo';
 import {Spinner} from './components/notification';
+import {handleResize, isMobilePage} from './utils';
 
 function markdownExtractor(str) {
   const pages = str.split(/(?=#\s+)/);
@@ -38,7 +39,6 @@ const MyGardenSide = ({onSelectAction}) => {
   return (
     <>
       <Nav className="col-md-12 d-md-block bg-light sidebar"
-        toggle
         activeKey="tomato"
         onSelect={(selectedKey) => onSelectAction(selectedKey)}
       >
@@ -78,21 +78,11 @@ const BreedError = () => {
 export default function MyGarden() {
   const [{ data, loading, hasError }, queryBreedInfo] = useBreedInfo({ vegeName: 'tomato' });
   const [activePage, setActivePage] = useState(1);
-  const [isMobile, setIsMobile] = useState(() => {
-    return window.innerWidth < 600
+  const [isMobile, setIsMobile] = useState(isMobilePage);
+
+  window.addEventListener('resize', () => {
+    handleResize(isMobile, setIsMobile)
   });
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth < 600) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    }
-
-    window.addEventListener('resize', handleResize);
-  })
 
   if (loading) {
     return <BreedLoading/>
@@ -110,9 +100,9 @@ export default function MyGarden() {
     for (let number = 0; number < content.length; number++) {
       if (content[number]['slides'].length > 0) {
         const carouselItems = [];
-        content[number]['slides'].forEach((element) => {
+        content[number]['slides'].forEach((element, i) => {
           carouselItems.push(
-            <Carousel.Item>
+            <Carousel.Item key={i}>
               <img
                 src={element.url}
                 alt={element.alt}
