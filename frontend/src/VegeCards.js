@@ -137,7 +137,7 @@ VegeFilter.propTypes = {
 
 export default function VegeCardList() {
   const [showModal, setShowModal] = useState(false);
-  const [vegeSelection, setVegeSelection] = useState('');
+  const [selectedVege, setSelectedVege] = useState('');
   const [isMobile, setIsMobile] = useState(isMobilePage);
   let vegeShowList = [];
 
@@ -145,13 +145,13 @@ export default function VegeCardList() {
     handleResize(isMobile, setIsMobile);
   });
 
-  if (vegeSelection === '') {
+  if (selectedVege === '') {
     vegetableList.forEach((element) => {
       vegeShowList.push(element);
     });
   } else {
     const filterSelection = vegetableList.filter((element) => {
-      return element.name.includes(vegeSelection);
+      return element.name.includes(selectedVege);
     });
     if (filterSelection.length > 0) {
       vegeShowList = filterSelection.slice();
@@ -170,7 +170,7 @@ export default function VegeCardList() {
 
   return (
     <>
-      <VegeFilter vegeSelection = {setVegeSelection}/>
+      <VegeFilter vegeSelection = {setSelectedVege}/>
       <div style={{display: 'flex', flexDirection: 'row',
         flexWrap: 'wrap'}}>
         {displayItem}
