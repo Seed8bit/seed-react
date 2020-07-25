@@ -30,7 +30,7 @@ function vegeInfoModalTable(props) {
   );
 }
 
-function ActionButton(inGarden, handler) {
+function ActionButton({inGarden, handler}) {
   if (!inGarden) {
     return (
       <Button variant="primary" onClick={handler}>
@@ -39,7 +39,7 @@ function ActionButton(inGarden, handler) {
     );
   } else {
     // remove from garden
-    return(
+    return (
       <Button variant="dark" onClick={handler}>
       移出菜园
       </Button>
@@ -47,30 +47,39 @@ function ActionButton(inGarden, handler) {
   }
 }
 
-function CreateVegeCard(params, isMobile, vegeShowModal, setVegeShowModal, forceUpdate) {
+function CreateVegeCard(params, isMobile, vegeShowModal
+    , setVegeShowModal, forceUpdate) {
   const handleClose = () => setVegeShowModal('none');
   const handleShow = () => setVegeShowModal(params.name);
   const showModal = params.name === vegeShowModal ? true: false;
-  const selectedVege = Object.values(JSON.parse(localStorage.getItem(SELECTVEGE_KEY_IN_STORAGE)) || {});
+  const selectedVege = Object.values(
+      JSON.parse(localStorage.getItem(SELECTVEGE_KEY_IN_STORAGE)) || {},
+  );
   const addToGarden = () => {
-    if (!selectedVege.includes(params.name)){
+    if (!selectedVege.includes(params.name)) {
       selectedVege.push(params.name);
-      localStorage.setItem(SELECTVEGE_KEY_IN_STORAGE, JSON.stringify(selectedVege));
-      forceUpdate((currentValue) => {return currentValue + 1});
+      localStorage.setItem(SELECTVEGE_KEY_IN_STORAGE
+          , JSON.stringify(selectedVege));
+      forceUpdate((currentValue) => {
+        return currentValue + 1;
+      });
     } else {
-      ;   // Already exist
+      ; // Already exist
     }
   };
   const removeFromGarden = () => {
     if (selectedVege.includes(params.name)) {
       // https://www.w3schools.com/js/js_array_methods.asp
       selectedVege.splice(selectedVege.indexOf(params.name), 1);
-      localStorage.setItem(SELECTVEGE_KEY_IN_STORAGE, JSON.stringify(selectedVege));
-      forceUpdate((currentValue) => {return currentValue - 1});
+      localStorage.setItem(SELECTVEGE_KEY_IN_STORAGE
+          , JSON.stringify(selectedVege));
+      forceUpdate((currentValue) => {
+        return currentValue - 1;
+      });
     } else {
-      ;   // selectedVege does not include this one
+      ; // selectedVege does not include this one
     }
-  }
+  };
   const inGarden = !!selectedVege.includes(params.name);
   const buttonHandler = inGarden ? removeFromGarden: addToGarden;
 
@@ -94,7 +103,8 @@ function CreateVegeCard(params, isMobile, vegeShowModal, setVegeShowModal, force
                   </Row>
                   <Row>
                     <Col>
-                      {ActionButton(inGarden, buttonHandler)}
+                      <ActionButton inGarden={inGarden}
+                        handler={buttonHandler}/>
                     </Col>
                   </Row>
                 </Col>
@@ -128,7 +138,7 @@ function CreateVegeCard(params, isMobile, vegeShowModal, setVegeShowModal, force
             <Card.Text onClick={handleShow}>
               {params.general}
             </Card.Text>
-              {ActionButton(inGarden, buttonHandler)}
+            <ActionButton inGarden={inGarden} handler={buttonHandler}/>
           </Card.Body>
         </Card>
 
@@ -176,7 +186,7 @@ VegeFilter.propTypes = {
 export default function VegeCardList() {
   const [vegeShowModal, setVegeShowModal] = useState('none');
   const [selectedVege, setSelectedVege] = useState('');
-  const [updateCounter, forceUpdate] = useState(1);
+  const [updateCounter, forceUpdate] = useState(1);   // eslint-disable-line
   const [isMobile, setIsMobile] = useState(isMobilePage);
   let vegeShowList = [];
 

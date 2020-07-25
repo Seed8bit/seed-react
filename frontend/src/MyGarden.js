@@ -39,7 +39,7 @@ function markdownExtractor(str) {
 /* eslint-disable react/prop-types */
 const MyGardenSide = ({onSelectAction, selectedVegeList}) => {
   const NavItems = selectedVegeList.map((element) => {
-    return(
+    return (
       <Nav.Item key={element.name}>
         <Nav.Link eventKey={element.page}>{element.name}</Nav.Link>
       </Nav.Item>
@@ -78,8 +78,9 @@ const BreedError = () => {
 /* eslint-disable */
 export default function MyGarden() {
   const selectedVeges = [];
-  (Object.values(JSON.parse(localStorage.getItem(SELECTVEGE_KEY_IN_STORAGE)))
-   || []).forEach((selectedVegeName) => {
+  (Object.values(JSON.parse(localStorage.getItem(SELECTVEGE_KEY_IN_STORAGE)) 
+  || []))
+  .forEach((selectedVegeName) => {
     const vegeListItem = vegetableList.find((vege) => {
       return vege.name === selectedVegeName;
     });
@@ -87,11 +88,10 @@ export default function MyGarden() {
       selectedVeges.push(vegeListItem);
     }
   });
-  const [{ data, loading, hasError }, queryBreedInfo] 
+  const [{ data, loading, hasError }, queryBreedInfo]
     = useBreedInfo({ vegeName: selectedVeges.length > 0 ? selectedVeges[0].page: "none"});
   const [activePage, setActivePage] = useState(1);
   const [isMobile, setIsMobile] = useState(isMobilePage);
-
 
   window.addEventListener('resize', () => {
     handleResize(isMobile, setIsMobile)
