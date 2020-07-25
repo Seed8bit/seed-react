@@ -8,6 +8,8 @@ import './myGardenStyle.css';
 import {useBreedInfo} from './context/useBreedInfo';
 import {Spinner} from './components/notification';
 import {handleResize, isMobilePage} from './utils';
+import {vegetableList} from './vegeInfo';
+import {SELECTVEGE_KEY_IN_STORAGE} from './VegeCards';
 
 function markdownExtractor(str) {
   const pages = str.split(/(?=#\s+)/);
@@ -35,22 +37,21 @@ function markdownExtractor(str) {
 }
 
 /* eslint-disable react/prop-types */
-const MyGardenSide = ({onSelectAction}) => {
+const MyGardenSide = ({onSelectAction, selectedVegeList}) => {
+  const NavItems = selectedVegeList.map((element) => {
+    return (
+      <Nav.Item key={element.name}>
+        <Nav.Link eventKey={element.page}>{element.name}</Nav.Link>
+      </Nav.Item>
+    );
+  });
   return (
     <>
       <Nav className="col-md-12 d-md-block bg-light sidebar"
         activeKey="tomato"
         onSelect={(selectedKey) => onSelectAction(selectedKey)}
       >
-        <Nav.Item>
-          <Nav.Link eventKey="tomato">西红柿</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="cucumber">黄瓜</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="greenonion">小葱</Nav.Link>
-        </Nav.Item>
+        {NavItems}
       </Nav>
     </>
   );
@@ -76,7 +77,19 @@ const BreedError = () => {
 
 /* eslint-disable */
 export default function MyGarden() {
-  const [{ data, loading, hasError }, queryBreedInfo] = useBreedInfo({ vegeName: 'tomato' });
+  const selectedVeges = [];
+  (Object.values(JSON.parse(localStorage.getItem(SELECTVEGE_KEY_IN_STORAGE)) 
+  || []))
+  .forEach((selectedVegeName) => {
+    const vegeListItem = vegetableList.find((vege) => {
+      return vege.name === selectedVegeName;
+    });
+    if (vegeListItem) {
+      selectedVeges.push(vegeListItem);
+    }
+  });
+  const [{ data, loading, hasError }, queryBreedInfo]
+    = useBreedInfo({ vegeName: selectedVeges.length > 0 ? selectedVeges[0].page: "none"});
   const [activePage, setActivePage] = useState(1);
   const [isMobile, setIsMobile] = useState(isMobilePage);
 
@@ -84,7 +97,9 @@ export default function MyGarden() {
     handleResize(isMobile, setIsMobile)
   });
 
-  if (loading) {
+  if(selectedVeges.length == 0) {
+    return (<p>请在蔬菜页面选择您想种的蔬菜</p>);
+  } else if (loading) {
     return <BreedLoading/>
   } else if (hasError) {
     return <BreedError/>
@@ -95,6 +110,7 @@ export default function MyGarden() {
     const sideTabOnSelect = (selectedKey) => {
       console.log(`selected: ${selectedKey}`);
       queryBreedInfo({vegeName: selectedKey});
+      setActivePage(1);
     };
 
     for (let number = 0; number < content.length; number++) {
@@ -156,7 +172,7 @@ export default function MyGarden() {
           <Container fluid>
             <Row>
               <Col sm={2} xs={2} md={2} lg={2}>
-                <MyGardenSide onSelectAction={sideTabOnSelect} />
+                <MyGardenSide onSelectAction={sideTabOnSelect} selectedVegeList={selectedVeges} />
               </Col>
               <Col sm={10} xs={10} md={10} lg={10}>
                 <Container fluid>
@@ -188,7 +204,7 @@ export default function MyGarden() {
               <Navbar collapseOnSelect  expand="sm">
                 <Navbar.Toggle />
                 <Navbar.Collapse>
-                  <MyGardenSide onSelectAction={sideTabOnSelect} />
+                  <MyGardenSide onSelectAction={sideTabOnSelect} selectedVegeList={selectedVeges}/>
                 </Navbar.Collapse>
               </Navbar>
             </Row>

@@ -8,6 +8,8 @@ import './myGardenStyle.css';
 import {handleResize, isMobilePage} from './utils';
 import PropTypes from 'prop-types';
 
+export const SELECTVEGE_KEY_IN_STORAGE = 'selectedVege';
+
 function vegeInfoModalTable(props) {
   const tableContent = Object.keys(props).map((element) => {
     return (<tr key={element}>
@@ -28,9 +30,58 @@ function vegeInfoModalTable(props) {
   );
 }
 
-function CreateVegeCard(params, isMobile, showModal, setShowModal) {
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+function ActionButton({inGarden, handler}) {
+  if (!inGarden) {
+    return (
+      <Button variant="primary" onClick={handler}>
+      加入菜园
+      </Button>
+    );
+  } else {
+    // remove from garden
+    return (
+      <Button variant="dark" onClick={handler}>
+      移出菜园
+      </Button>
+    );
+  }
+}
+
+function CreateVegeCard(params, isMobile, vegeShowModal
+    , setVegeShowModal, forceUpdate) {
+  const handleClose = () => setVegeShowModal('none');
+  const handleShow = () => setVegeShowModal(params.name);
+  const showModal = params.name === vegeShowModal ? true: false;
+  const selectedVege = Object.values(
+      JSON.parse(localStorage.getItem(SELECTVEGE_KEY_IN_STORAGE)) || {},
+  );
+  const addToGarden = () => {
+    if (!selectedVege.includes(params.name)) {
+      selectedVege.push(params.name);
+      localStorage.setItem(SELECTVEGE_KEY_IN_STORAGE
+          , JSON.stringify(selectedVege));
+      forceUpdate((currentValue) => {
+        return currentValue + 1;
+      });
+    } else {
+      ; // Already exist
+    }
+  };
+  const removeFromGarden = () => {
+    if (selectedVege.includes(params.name)) {
+      // https://www.w3schools.com/js/js_array_methods.asp
+      selectedVege.splice(selectedVege.indexOf(params.name), 1);
+      localStorage.setItem(SELECTVEGE_KEY_IN_STORAGE
+          , JSON.stringify(selectedVege));
+      forceUpdate((currentValue) => {
+        return currentValue - 1;
+      });
+    } else {
+      ; // selectedVege does not include this one
+    }
+  };
+  const inGarden = !!selectedVege.includes(params.name);
+  const buttonHandler = inGarden ? removeFromGarden: addToGarden;
 
   if (isMobile) {
     return (
@@ -41,20 +92,19 @@ function CreateVegeCard(params, isMobile, showModal, setShowModal) {
               <Row>
                 <Col sm={3} xs={3} md={3} lg={3}>
                   <Image variant="top" src={params.icon}
-                    style={{width: '6rem'}}/>
+                    style={{width: '6rem'}} onClick={handleShow}/>
                 </Col>
                 <Col>
-                  <Row>
+                  <Row onClick={handleShow}>
                     <Col><h1 style={{fontSize: '23px'}}>{params.name}</h1></Col>
                   </Row>
-                  <Row>
+                  <Row onClick={handleShow}>
                     <Col>{params.general}</Col>
                   </Row>
                   <Row>
                     <Col>
-                      <Button variant="primary" onClick={handleShow}>
-                        {params.name}信息
-                      </Button>
+                      <ActionButton inGarden={inGarden}
+                        handler={buttonHandler}/>
                     </Col>
                   </Row>
                 </Col>
@@ -82,15 +132,13 @@ function CreateVegeCard(params, isMobile, showModal, setShowModal) {
     return (
       <div style = {{margin: '2rem'}} key = {params.name}>
         <Card style={{width: '12rem'}}>
-          <Card.Img variant="top" src={params.icon}/>
+          <Card.Img variant="top" src={params.icon} onClick={handleShow}/>
           <Card.Body>
-            <Card.Title>{params.name}</Card.Title>
-            <Card.Text>
+            <Card.Title onClick={handleShow}>{params.name}</Card.Title>
+            <Card.Text onClick={handleShow}>
               {params.general}
             </Card.Text>
-            <Button variant="primary" onClick={handleShow}>
-              {params.name}信息
-            </Button>
+            <ActionButton inGarden={inGarden} handler={buttonHandler}/>
           </Card.Body>
         </Card>
 
@@ -136,8 +184,9 @@ VegeFilter.propTypes = {
 };
 
 export default function VegeCardList() {
-  const [showModal, setShowModal] = useState(false);
+  const [vegeShowModal, setVegeShowModal] = useState('none');
   const [selectedVege, setSelectedVege] = useState('');
+  const [updateCounter, forceUpdate] = useState(1);   // eslint-disable-line
   const [isMobile, setIsMobile] = useState(isMobilePage);
   let vegeShowList = [];
 
@@ -165,7 +214,7 @@ export default function VegeCardList() {
     // eslint complaints using capital for function naming.
     // if not using capital then the function cannot use Hooks.
     // TODO: rules on naming function, class, variable
-    return (CreateVegeCard(element, isMobile, showModal, setShowModal));    // eslint-disable-line
+    return (CreateVegeCard(element, isMobile, vegeShowModal, setVegeShowModal, forceUpdate));    // eslint-disable-line
   });
 
   return (
