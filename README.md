@@ -38,4 +38,8 @@ Check [Dockerfile](./Dockerfile) for image build reference
 
 Azure App Service is integrated with Github Action.
 
-Check [workflow](./.github/workflows) for CI/CD reference
+1. Build & deploy with Github Action
+- Check [workflow](./.github/workflows) for reference
+
+2. Config startup command in Azure App Service portal
+- Check [how to config startup command via Azure console](https://docs.microsoft.com/en-us/azure/developer/python/tutorial-deploy-app-service-on-linux-04#create-a-startup-file)
