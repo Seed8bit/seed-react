@@ -26,8 +26,8 @@ jobs:
     - name: install and build
       run: |
         yarn install
-        yarn run deps --if-present
-        yarn run build-frontend --if-present
+        yarn run deps
+        yarn run build-frontend
 
     - name: deploy to azure app service
       uses: azure/webapps-deploy@v1
