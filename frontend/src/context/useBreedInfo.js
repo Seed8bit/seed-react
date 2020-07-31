@@ -2,12 +2,20 @@ import {useState, useEffect} from 'react';
 import getBreedInfo from '../api/breedInfoApi';
 
 const useBreedInfo = (initialQuery) => {
-  const [query, setQuery] = useState(initialQuery);
+  const [query, setBreedQuery] = useState(initialQuery);
   const [breedInfo, setBreedInfo] = useState({
     loading: true,
     hasError: false,
     data: undefined,
   });
+
+  const resetBreedInfo = () => {
+    setBreedInfo({
+      loading: true,
+      hasError: false,
+      data: undefined
+    })
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +38,7 @@ const useBreedInfo = (initialQuery) => {
     fetchData();
   }, [query]);
 
-  return [breedInfo, setQuery];
+  return [breedInfo, {setBreedQuery, resetBreedInfo}];
 };
 
 export {useBreedInfo};
