@@ -88,8 +88,9 @@ export default function MyGarden() {
       selectedVeges.push(vegeListItem);
     }
   });
-  const [{ data, loading, hasError }, queryBreedInfo]
+  const [{ data, loading, hasError }, {setBreedQuery, resetBreedInfo}]
     = useBreedInfo({ vegeName: selectedVeges.length > 0 ? selectedVeges[0].page: "none"});
+
   const [activePage, setActivePage] = useState(1);
   const [isMobile, setIsMobile] = useState(isMobilePage);
 
@@ -109,7 +110,8 @@ export default function MyGarden() {
 
     const sideTabOnSelect = (selectedKey) => {
       console.log(`selected: ${selectedKey}`);
-      queryBreedInfo({vegeName: selectedKey});
+      setBreedQuery({vegeName: selectedKey});
+      resetBreedInfo();
       setActivePage(1);
     };
 
