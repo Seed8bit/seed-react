@@ -11,11 +11,20 @@ import PropTypes from 'prop-types';
 export const SELECTVEGE_KEY_IN_STORAGE = 'selectedVege';
 
 function vegeInfoModalTable(props) {
-  const tableContent = Object.keys(props).map((element) => {
-    return (<tr key={element}>
-      <td>{element}</td>
-      <td>{props[element]}</td>
-    </tr>);
+  const tableContent = Object.keys(props).map((sectionTitle) => {
+    console.log(sectionTitle)
+    const sectionTable = Object.keys(props[sectionTitle]).map((infoEntry) => {
+      return (<tr key={infoEntry}>
+        <td>{infoEntry}</td>
+        <td>{props[sectionTitle][infoEntry]}</td>
+      </tr>);
+    })
+
+    return (<>
+      <h5>{sectionTitle}</h5>
+      {sectionTable}
+      </>)
+    
   },
   );
 
@@ -220,6 +229,7 @@ export default function VegeCardList() {
   return (
     <>
       <VegeFilter vegeSelection = {setSelectedVege}/>
+      <p style={{fontSize:'10pt', marginLeft:'1rem'}}>点击蔬菜卡片显示种植信息</p>
       <div style={{display: 'flex', flexDirection: 'row',
         flexWrap: 'wrap'}}>
         {displayItem}
