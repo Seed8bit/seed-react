@@ -12,20 +12,19 @@ export const SELECTVEGE_KEY_IN_STORAGE = 'selectedVege';
 
 function vegeInfoModalTable(props) {
   const tableContent = Object.keys(props).map((sectionTitle) => {
-    console.log(sectionTitle)
     const sectionTable = Object.keys(props[sectionTitle]).map((infoEntry) => {
       return (<tr key={infoEntry}>
         <td>{infoEntry}</td>
         <td>{props[sectionTitle][infoEntry]}</td>
       </tr>);
-    })
+    });
 
-    return (<>
-      <h5>{sectionTitle}</h5>
-      {sectionTable}
-      </>)
-    
-  },
+    return (
+        <div key={sectionTitle}>
+          <h5>{sectionTitle}</h5>
+          {sectionTable}
+        </div>);
+    },
   );
 
   return (
