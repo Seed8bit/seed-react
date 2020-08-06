@@ -1,14 +1,16 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import {Navbar, Nav} from 'react-bootstrap';
 
-export default function NavigationBar({ navList = [{link: "", name: ""}] }) {
+
+export default function NavigationBar({navList = [{link: '', name: ''}]}) {
   const renderNavItem = navList.map((item) => {
     return (
-      <Nav.Link href={item.link}>
+      <Nav.Link href={item.link} key={item.name}>
         {item.name}
       </Nav.Link>
-    )
-  })
+    );
+  });
 
   return (
     <Navbar bg="dark" variant="dark">
@@ -18,4 +20,8 @@ export default function NavigationBar({ navList = [{link: "", name: ""}] }) {
       </Nav>
     </Navbar>
   );
+};
+
+NavigationBar.propTypes = {
+  navList: PropTypes.array.isRequired,
 };

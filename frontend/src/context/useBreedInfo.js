@@ -13,9 +13,9 @@ const useBreedInfo = (initialQuery) => {
     setBreedInfo({
       loading: true,
       hasError: false,
-      data: undefined
-    })
-  }
+      data: undefined,
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {

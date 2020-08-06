@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {
   Container, Row, Col, ProgressBar
   , Nav, Carousel, Button, Navbar,
 } from 'react-bootstrap';
-import { useBreedInfo } from '../../context/useBreedInfo';
-import { Spinner } from '../../components/notification';
-import { handleResize, isMobilePage } from '../../utils/utils';
-import { vegetableList } from '../../vegeInfo';
-import { SELECTVEGE_KEY_IN_STORAGE } from '../../pages/vege/VegeCards';
+import {useBreedInfo} from '../../context/useBreedInfo';
+import {Spinner} from '../../components/notification';
+import {handleResize, isMobilePage} from '../../utils/utils';
+import {vegetableList} from '../../vegeInfo';
+import {SELECTVEGE_KEY_IN_STORAGE} from '../../pages/vege/VegeCards';
 import '../../theme/generalStyle.css';
 
 function markdownExtractor(str) {
@@ -24,7 +24,7 @@ function markdownExtractor(str) {
       regRes.forEach((slide) => {
         const alt = slide.match(/\[([^\]]+)\]/)[1];
         const url = slide.match(/\(([^)]+)\)/)[1];
-        slides.push({ 'url': url, 'alt': alt });
+        slides.push({'url': url, 'alt': alt});
       });
     }
     content.push({
@@ -37,7 +37,7 @@ function markdownExtractor(str) {
 }
 
 /* eslint-disable react/prop-types */
-const MyGardenSide = ({ onSelectAction, selectedVegeList }) => {
+const MyGardenSide = ({onSelectAction, selectedVegeList}) => {
   const NavItems = selectedVegeList.map((element) => {
     return (
       <Nav.Item key={element.name}>
@@ -61,7 +61,7 @@ const MyGardenSide = ({ onSelectAction, selectedVegeList }) => {
 const BreedLoading = () => {
   return (
     <>
-      <Container fluid style={{ maxWidth: 1250 }}>
+      <Container fluid style={{maxWidth: 1250}}>
         <p>Loading...</p>
         <Spinner></Spinner>
       </Container>
