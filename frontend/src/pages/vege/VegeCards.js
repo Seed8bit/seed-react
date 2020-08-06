@@ -3,10 +3,10 @@ import {Card, Button, Modal, Table,
   Container, Col, Row, Image,
   Form}
   from 'react-bootstrap';
-import {vegetableList} from './vegeInfo';
-import './myGardenStyle.css';
-import {handleResize, isMobilePage} from './utils';
+import {vegetableList} from '../../vegeInfo';
+import {handleResize, isMobilePage} from '../../utils/utils';
 import PropTypes from 'prop-types';
+import '../../theme/generalStyle.css';
 
 export const SELECTVEGE_KEY_IN_STORAGE = 'selectedVege';
 
