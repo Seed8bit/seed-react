@@ -1,8 +1,8 @@
-import {NavigationBar} from "./navigation"
-import {Toaster, Spinner} from "./notification"
+import {NavigationBar} from './navigation';
+import {Toaster, Spinner} from './notification';
 
-export{
-    NavigationBar,
-    Toaster,
-    Spinner,
-}
+export {
+  NavigationBar,
+  Toaster,
+  Spinner,
+};
