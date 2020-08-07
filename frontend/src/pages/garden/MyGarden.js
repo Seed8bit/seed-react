@@ -5,7 +5,7 @@ import {
   , Nav, Carousel, Button, Navbar,
 } from 'react-bootstrap';
 import {useBreedInfo} from '../../context/useBreedInfo';
-import {Spinner} from '../../components/notification';
+import {Spinner} from '../../components';
 import {handleResize, isMobilePage} from '../../utils/utils';
 import {vegetableList} from '../../vegeInfo';
 import {SELECTVEGE_KEY_IN_STORAGE} from '../../pages/vege/VegeCards';

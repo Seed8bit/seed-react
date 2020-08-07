@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import {NavigationBar as NavBar} from './components/navigation';
+import {NavigationBar as NavBar} from './components';
 import VegeCardList from './pages/vege/VegeCards';
 import MyGarden from './pages/garden/MyGarden';
 

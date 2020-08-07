@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Navbar, Nav} from 'react-bootstrap';
 
-
 export default function NavigationBar({navList = [{link: '', name: ''}]}) {
   const renderNavItem = navList.map((item) => {
     return (
