@@ -105,14 +105,3 @@ export const vegetableList = [
     },
   },
 ];
-
-export const navInfo = [
-  {
-    'name': '蔬菜',
-    'link': '/',
-  },
-  {
-    'name': '菜园',
-    'link': '/myGarden',
-  },
-];

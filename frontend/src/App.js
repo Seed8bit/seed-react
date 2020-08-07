@@ -1,19 +1,29 @@
 import React from 'react';
-import {navInfo} from './vegeInfo';
-import {NavigationBar as navigationBar} from './Navigation';
-import VegeCardList from './VegeCards';
 import {Route, Switch} from 'react-router-dom';
-import MyGarden from './MyGarden';
+import {NavigationBar as NavBar} from './components';
+import VegeCardList from './pages/vege/VegeCards';
+import MyGarden from './pages/garden/MyGarden';
+
+const navItems = [
+  {
+    'name': '蔬菜',
+    'link': '/',
+  },
+  {
+    'name': '菜园',
+    'link': '/myGarden',
+  },
+];
 
 function App() {
   return (
     <div>
       <div>
-        {navigationBar({navInfo})}
+        <NavBar navList={navItems}></NavBar>
       </div>
       <Switch>
-        <Route path={navInfo[0].link} component={VegeCardList} exact/>
-        <Route path={navInfo[1].link} component={MyGarden}/>
+        <Route path={navItems[0].link} component={VegeCardList} exact/>
+        <Route path={navItems[1].link} component={MyGarden}/>
       </Switch>
     </div>
   );

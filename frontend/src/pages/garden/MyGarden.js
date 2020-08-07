@@ -4,12 +4,12 @@ import {
   Container, Row, Col, ProgressBar
   , Nav, Carousel, Button, Navbar,
 } from 'react-bootstrap';
-import './myGardenStyle.css';
-import {useBreedInfo} from './context/useBreedInfo';
-import {Spinner} from './components/notification';
-import {handleResize, isMobilePage} from './utils';
-import {vegetableList} from './vegeInfo';
-import {SELECTVEGE_KEY_IN_STORAGE} from './VegeCards';
+import {useBreedInfo} from '../../context/useBreedInfo';
+import {Spinner} from '../../components';
+import {handleResize, isMobilePage} from '../../utils/utils';
+import {vegetableList} from '../../vegeInfo';
+import {SELECTVEGE_KEY_IN_STORAGE} from '../../pages/vege/VegeCards';
+import '../../theme/generalStyle.css';
 
 function markdownExtractor(str) {
   const pages = str.split(/(?=#\s+)/);
@@ -78,18 +78,18 @@ const BreedError = () => {
 /* eslint-disable */
 export default function MyGarden() {
   const selectedVeges = [];
-  (Object.values(JSON.parse(localStorage.getItem(SELECTVEGE_KEY_IN_STORAGE)) 
-  || []))
-  .forEach((selectedVegeName) => {
-    const vegeListItem = vegetableList.find((vege) => {
-      return vege.name === selectedVegeName;
+  (Object.values(JSON.parse(localStorage.getItem(SELECTVEGE_KEY_IN_STORAGE))
+    || []))
+    .forEach((selectedVegeName) => {
+      const vegeListItem = vegetableList.find((vege) => {
+        return vege.name === selectedVegeName;
+      });
+      if (vegeListItem) {
+        selectedVeges.push(vegeListItem);
+      }
     });
-    if (vegeListItem) {
-      selectedVeges.push(vegeListItem);
-    }
-  });
-  const [{ data, loading, hasError }, {setBreedQuery, resetBreedInfo}]
-    = useBreedInfo({ vegeName: selectedVeges.length > 0 ? selectedVeges[0].page: "none"});
+  const [{ data, loading, hasError }, { setBreedQuery, resetBreedInfo }]
+    = useBreedInfo({ vegeName: selectedVeges.length > 0 ? selectedVeges[0].page : "none" });
 
   const [activePage, setActivePage] = useState(1);
   const [isMobile, setIsMobile] = useState(isMobilePage);
@@ -98,19 +98,19 @@ export default function MyGarden() {
     handleResize(isMobile, setIsMobile)
   });
 
-  if(selectedVeges.length == 0) {
+  if (selectedVeges.length == 0) {
     return (<p>请在蔬菜页面选择您想种的蔬菜</p>);
   } else if (loading) {
-    return <BreedLoading/>
+    return <BreedLoading />
   } else if (hasError) {
-    return <BreedError/>
+    return <BreedError />
   } else {
     const content = markdownExtractor(data.markdown);
     const slides = [];
 
     const sideTabOnSelect = (selectedKey) => {
       console.log(`selected: ${selectedKey}`);
-      setBreedQuery({vegeName: selectedKey});
+      setBreedQuery({ vegeName: selectedKey });
       resetBreedInfo();
       setActivePage(1);
     };
@@ -160,11 +160,11 @@ export default function MyGarden() {
       return (<>
         <Col>
           <Button size='sm' variant="outline-primary" onClick={() => changePage('back')}
-                  style={{marginLeft:'1rem', marginRight:'1rem'}}>上一页</Button>
+            style={{ marginLeft: '1rem', marginRight: '1rem' }}>上一页</Button>
           <Button size='sm' variant="outline-primary" onClick={() => changePage('next')}
-                  style={{marginLeft:'1rem', marginRight:'1rem'}}>下一页</Button>
+            style={{ marginLeft: '1rem', marginRight: '1rem' }}>下一页</Button>
         </Col>
-       </>);
+      </>);
     };
 
     // "activePage - 1" to convert to index
@@ -189,7 +189,7 @@ export default function MyGarden() {
                       {slides[activePage - 1]}
                     </Col>
                   </Row>
-                  <Row style={{marginTop: "2rem"}}>
+                  <Row style={{ marginTop: "2rem" }}>
                     {simplePaging()}
                   </Row>
                 </Container>
@@ -202,24 +202,24 @@ export default function MyGarden() {
       return (
         <>
           <Container fluid>
-            <Row>               
-              <Navbar collapseOnSelect  expand="sm">
+            <Row>
+              <Navbar collapseOnSelect expand="sm">
                 <Navbar.Toggle />
                 <Navbar.Collapse>
-                  <MyGardenSide onSelectAction={sideTabOnSelect} selectedVegeList={selectedVeges}/>
+                  <MyGardenSide onSelectAction={sideTabOnSelect} selectedVegeList={selectedVeges} />
                 </Navbar.Collapse>
               </Navbar>
             </Row>
             <Row>
               <Col>
                 <ProgressBar now={activePage * 100 / content.length}
-                    label={content[activePage - 1]['title']} />              
+                  label={content[activePage - 1]['title']} />
               </Col>
             </Row>
             <Row>
-              <Col style={{leftMargin: 1, rightMargin: 1}}>
+              <Col style={{ leftMargin: 1, rightMargin: 1 }}>
                 <ReactMarkdown
-                  source={content[activePage - 1]['paragraphs']} />              
+                  source={content[activePage - 1]['paragraphs']} />
               </Col>
             </Row>
             <Row>
@@ -227,7 +227,7 @@ export default function MyGarden() {
                 {slides[activePage - 1]}
               </Col>
             </Row>
-            <Row style={{marginTop: "2rem"}}>
+            <Row style={{ marginTop: "2rem" }}>
               {simplePaging()}
             </Row>
           </Container>
