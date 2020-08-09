@@ -33,6 +33,9 @@ module.exports = {
       }
     ]
   },
+  optimization: {
+    splitChunks: { chunks: "all" }
+  },
   devServer: {
     historyApiFallback: true,
     proxy: {
