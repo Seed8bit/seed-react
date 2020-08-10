@@ -7,17 +7,10 @@
   "author": "Runze <sendrunzedong@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint-backend": "cd backend && yarn run lint",
-    "lint-frontend": "cd frontend && yarn run lint",
-    "lint": "npm-run-all -p lint-backend lint-frontend",
-    "deps-backend": "cd backend && yarn install --frozen-lockfile",
-    "deps-frontend": "cd frontend && yarn install --frozen-lockfile",
-    "deps": "npm-run-all -p deps-backend deps-frontend",
-    "build-frontend": "cd frontend && yarn build",
-    "server": "cd backend && yarn start",
-    "client": "cd frontend && yarn start",
-    "dev-concurrent": "concurrently \"yarn run server\" \"yarn run client\"",
-    "deploy": "npm-run-all lint build-frontend server"
+    "lint": "cd frontend && yarn run lint",
+    "deps": "cd frontend && yarn install --frozen-lockfile",
+    "build": "cd frontend && yarn build",
+    "dev": "cd frontend && yarn start"
   },
   "husky": {
     "hooks": {
@@ -25,8 +18,6 @@
     }
   },
   "devDependencies": {
-    "husky": "^4.2.5",
-    "npm-run-all": "^4.1.5",
-    "concurrently": "^5.2.0"
+    "husky": "^4.2.5"
   }
 }
