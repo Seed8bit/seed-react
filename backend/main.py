@@ -6,11 +6,6 @@ from breeds.usecase import get_breed_info_from_azure, BREED_INFO_MAP
 app = FastAPI()
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
 @app.get("/health")
 def check_health():
     return {"status": "ok"}
