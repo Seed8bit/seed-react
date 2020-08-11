@@ -1,4 +1,5 @@
 import requests
+from breeds import domain
 
 BREED_INFO_MAP = {
     "tomato": "https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/tomato.md",
@@ -11,6 +12,10 @@ BREED_INFO_MAP = {
     "carrot": "https://vegetableswebsite.blob.core.windows.net/vegetablesinformation/carrot.md",
 }
 
-def get_breed_info_from_azure(vege_name: str):
-    response = requests.get(BREED_INFO_MAP[vege_name])
-    return response.content
+def get_breed_info(link: str) -> domain.BreedContent:
+    try:
+        resp = requests.get(link)
+        return domain.BreedContent(content=resp.content, error=None)
+    except requests.exceptions.RequestException as err:
+        print(err) # log err here
+        return domain.BreedContent(content=None, error=err)
