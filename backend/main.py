@@ -1,7 +1,10 @@
 import uvicorn
 from typing import Optional
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from breeds import usecase
+
 
 app = FastAPI()
 
@@ -23,6 +26,20 @@ def get_breed_info(name: str):
             status_code=500, detail="Internal server error on fetching breed info")
 
     return {"markdown": breed_info.content}
+
+###
+# serve static file for frontend
+###
+
+
+@app.get("/garden")
+async def main():
+    return FileResponse("../frontend/build/index.html")
+
+
+@app.get("/")
+async def main():
+    return FileResponse("../frontend/build/index.html")
 
 
 if __name__ == "__main__":
