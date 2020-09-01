@@ -38,10 +38,11 @@ docker run --publish 8000:5000 rectcream/garden:latest
 ### Application Docker Image Deployment
 1. Build image
 ```
-docker build --tag garden:{version} .
+docker build --tag garden:{version} --file {docker_compose_yml_file} .
 
 for example:
-docker build -t rectcream/garden:latest .
+# please not miss the last argument `.` (refer to build context path)
+docker build -t rectcream/garden:latest -f frontend.Dockerfile .
 ```
 
 2. Run Image on local host
