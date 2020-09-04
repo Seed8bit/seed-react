@@ -5,10 +5,10 @@ WORKDIR /usr/src/app
 # Copy the app's source code from host to image filesystem
 COPY . .
 # Install app's deps
-RUN yarn install
-RUN yarn run deps
-RUN yarn run build-frontend
+RUN npm install
+RUN npm run deps
+RUN npm run build
 # Set port the container is listening on at runtime.
 EXPOSE 8080
 # Set the default command for running container
-CMD [ "yarn", "run", "dev" ]
+CMD [ "npm", "run", "start" ]

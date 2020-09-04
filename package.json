@@ -7,14 +7,14 @@
   "author": "Runze <sendrunzedong@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "cd frontend && yarn run lint",
-    "deps": "cd frontend && yarn install --frozen-lockfile",
-    "build": "cd frontend && yarn build",
-    "dev": "cd frontend && yarn start"
+    "lint": "cd frontend && npm run lint",
+    "deps": "cd frontend && npm install --from-lockfile",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm start"
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn run lint"
+      "pre-push": "npm run lint"
     }
   },
   "devDependencies": {
