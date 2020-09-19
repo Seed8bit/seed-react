@@ -3,6 +3,9 @@
 /.pnp
 .pnp.js
 
+# python
+**/__pycache__
+
 # testing
 /coverage
 

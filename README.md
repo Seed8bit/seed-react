@@ -2,22 +2,15 @@
 
 This repository contains a web application to provide vegetable planting guideline.
 
-The tech stack includes *React*, *Express* and *Azure* as cloud service.
+The tech stack includes *React*, *FastAPI* and *Azure* as cloud service.
 
 # Development
 
-1. Install dependency
-```
-yarn run deps-backend #install backend deps
-yarn run deps-frontend #install frontend deps
-```
-2. Develop localhost
-```
-yarn run server #serve backend
-yarn run client #serve frontend
-```
+Check [Frontend doc](./frontend/README.md)
 
-Check [package.json](./package.json) for more npm script
+Check [Backend doc](./backend/README.md)
+
+Check [package.json](./package.json) for some npm scripts
 
 # Deployment
 ## Deploy to Azure Virtual Machine
@@ -45,10 +38,11 @@ docker run --publish 8000:5000 rectcream/garden:latest
 ### Application Docker Image Deployment
 1. Build image
 ```
-docker build --tag garden:{version} .
+docker build --tag garden:{version} --file {docker_compose_yml_file} .
 
 for example:
-docker build -t rectcream/garden:latest .
+# please not miss the last argument `.` (refer to build context path)
+docker build -t rectcream/garden:latest -f frontend.Dockerfile .
 ```
 
 2. Run Image on local host

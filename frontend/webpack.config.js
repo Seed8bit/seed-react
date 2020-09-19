@@ -37,6 +37,8 @@ module.exports = {
     splitChunks: { chunks: "all" }
   },
   devServer: {
+    host: "0.0.0.0",
+    port: 8080,
     historyApiFallback: true,
     proxy: {
       '/': 'http://localhost:5000'
