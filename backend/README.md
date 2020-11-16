@@ -1,5 +1,5 @@
 # Garden Backend
-Frontend is built with [FastAPI](https://fastapi.tiangolo.com/)
+Backend is built with [FastAPI](https://fastapi.tiangolo.com/)
 
 ### Development
 
